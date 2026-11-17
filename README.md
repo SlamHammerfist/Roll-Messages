@@ -69,6 +69,12 @@ Hooks.once("rollMessages.ready", api => {
     // Return [{ name, value, key, id, relativeTo }], key being e.g. "save.reflex".
     collect(actor, roll) {
       return [];
+    },
+
+    // Return false to hide a message for this roll, e.g. when the change's own conditions fail.
+    // message.effect and message.change are the effect and change the message came from.
+    condition(message, roll) {
+      return true;
     }
   });
 });

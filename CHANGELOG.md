@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+- System modules can hide a message for a roll with an optional `condition(message, roll)`
+  function, for example to honour the system's own change conditions. Messages now carry the
+  `effect` and `change` they came from.
+
 ## 2.0.1
 
 - A message no longer shows its effect's name twice when an `@Bonus` link already shows that name.

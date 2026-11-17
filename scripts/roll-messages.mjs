@@ -23,7 +23,9 @@
  *     },
  *     insert(app, element, box) { ... },          // Optional. Put the box in the dialog.
  *     bonus: api.formulaFieldBonus(element => element.querySelector("input[name=...]")),
- *     collect(actor, roll) { ... }                // Optional. Extra message sources.
+ *     collect(actor, roll) { ... },               // Optional. Extra message sources.
+ *     condition(message, roll) { ... }            // Optional. false hides a message, e.g. when
+ *                                                 // the change's own conditions fail for this roll.
  *   }));
  */
 
@@ -64,6 +66,8 @@ const enrichedCache = new WeakMap();
  * @property {string} key           The key after the prefix, e.g. "save.dex".
  * @property {string} id            Stable id for caching, e.g. the effect's uuid.
  * @property {Document} [relativeTo]  Document links in the message resolve against.
+ * @property {ActiveEffect} [effect]  The effect the message is written on.
+ * @property {object} [change]        The effect change holding the message.
  */
 
 /**
@@ -88,6 +92,7 @@ const enrichedCache = new WeakMap();
  * @property {(app, element, box: HTMLElement) => void} [insert]
  * @property {BonusHandler} [bonus]
  * @property {(actor: Actor, roll: RollInfo) => Message[]} [collect]
+ * @property {(message: Message, roll: RollInfo) => boolean} [condition]
  */
 
 const api = {
@@ -400,7 +405,24 @@ function findMessages(roll, system) {
   const type = String(roll.type).toLowerCase();
   const aliases = Object.fromEntries(Object.entries(roll.aliases ?? {})
     .map(([k, v]) => [k.toLowerCase(), String(v).toLowerCase()]));
-  return candidates.filter(m => m.value && matches(m.key, type, tags, aliases));
+  return candidates.filter(m => m.value && matches(m.key, type, tags, aliases) && passes(m, roll, system));
+}
+
+/**
+ * Does the system let this message show for this roll?
+ * @param {Message} message
+ * @param {RollInfo} roll
+ * @param {SystemConfig|null} system
+ * @returns {boolean}
+ */
+function passes(message, roll, system) {
+  if ( !system?.condition ) return true;
+  try {
+    return system.condition(message, roll) !== false;
+  } catch(err) {
+    console.warn("Roll Messages | The system module could not check a message's conditions.", err);
+    return true;
+  }
 }
 
 /**
@@ -421,7 +443,9 @@ function effectMessages(actor) {
         value: String(change.value ?? "").trim(),
         key: key.slice(PREFIX.length),
         id: effect.uuid,
-        relativeTo: effect
+        relativeTo: effect,
+        effect,
+        change
       });
     }
   }
