@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+- A message no longer shows its effect's name twice when an `@Bonus` link already shows that name.
+- Messages in the Messages box are plain, without the tinted background and left border.
+
 ## 2.0.0
 
 Rebuilt from scratch for Foundry VTT v14, and split into a system-free hub and system modules.

@@ -2,7 +2,7 @@
   "id": "roll-messages",
   "title": "Roll Messages",
   "description": "Shows GM-written notes in the roll dialog whenever a matching Active Effect is active on the rolling actor, with clickable bonus names that add the bonus to the roll. This is the system-free hub: install a system module such as Roll Messages for D&D 5e alongside it.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "authors": [
     {
       "name": "Slam Hammerfist"
@@ -10,7 +10,7 @@
   ],
   "url": "https://github.com/SlamHammerfist/Roll-Messages",
   "manifest": "https://github.com/SlamHammerfist/Roll-Messages/releases/latest/download/module.json",
-  "download": "https://github.com/SlamHammerfist/Roll-Messages/releases/download/v2.0.0/module.zip",
+  "download": "https://github.com/SlamHammerfist/Roll-Messages/releases/download/v2.0.1/module.zip",
   "bugs": "https://github.com/SlamHammerfist/Roll-Messages/issues",
   "readme": "https://github.com/SlamHammerfist/Roll-Messages/blob/main/README.md",
   "changelog": "https://github.com/SlamHammerfist/Roll-Messages/blob/main/CHANGELOG.md",

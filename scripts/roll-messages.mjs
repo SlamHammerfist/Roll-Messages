@@ -283,13 +283,19 @@ async function buildBox(app, roll, messages) {
     }
     const row = document.createElement("div");
     row.className = "rm-message";
-    const source = document.createElement("span");
-    source.className = "rm-message-source";
-    source.textContent = message.name;
     const body = document.createElement("div");
     body.className = "rm-message-body";
     body.innerHTML = html;
-    row.append(source, body);
+    // A bonus link already showing the effect's name stands in for the name header.
+    const label = cleanLabel(message.name);
+    const named = [...body.querySelectorAll(".rm-bonus")].some(a => a.dataset.label === label);
+    if ( !named ) {
+      const source = document.createElement("span");
+      source.className = "rm-message-source";
+      source.textContent = message.name;
+      row.append(source);
+    }
+    row.append(body);
     box.append(row);
   }
   return box;
